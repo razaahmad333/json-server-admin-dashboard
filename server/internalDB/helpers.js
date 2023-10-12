@@ -21,14 +21,21 @@ exports.saveSchema = async (tableName, schema) => {
   await __db.write();
 };
 
-exports.saveSchemaInBulk = async (schemas) => {
+exports.saveSchemaInBulk = async (schemas, initial = false) => {
   const __db = await this.getDB();
   await __db.read();
 
-  if(!__db.data) {
+  if (!__db.data) {
     __db.data = {};
   }
   schemas.forEach(({ tableName, schema }) => {
+    if (initial && __db.data[tableName]) {
+      return;
+    }
+    if (!initial && __db.data[tableName]) {
+      schema = [...new Set([...__db.data[tableName], ...schema])];
+      return;
+    }
     __db.data[tableName] = schema;
   });
   await __db.write();

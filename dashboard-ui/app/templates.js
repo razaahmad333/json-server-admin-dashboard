@@ -1,4 +1,4 @@
-import { trashIcon } from "../icons.js";
+import * as ICONS from "./icons.js";
 
 export const tableNameListTemplate = ({ tableName, entries }) => `
     <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -6,7 +6,7 @@ export const tableNameListTemplate = ({ tableName, entries }) => `
         <div>
           <span class="badge bg-primary rounded-pill">${entries}</span>
           <button class="btn btn-sm text-danger delete-table-button" data-id="${tableName}">
-            ${trashIcon}  
+            ${ICONS.trashIcon}  
           </button>
         </div>
     </div>
@@ -20,7 +20,7 @@ export const tableRowTemplate = (tableRow) =>
     .map((row, i) => `<td ${i == 0 ? "scope='row'" : ""}  >${row}</td>`)
     .join("")} </tr> `;
 
-export const tableTemplate = ({tableHeader, tableRows}) => `
+export const tableTemplate = ({ tableHeader, tableRows }) => `
     <thead>
         <tr>
             ${tableHeader}

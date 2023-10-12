@@ -1,7 +1,17 @@
 const express = require("express");
-const app = express();
 const { populateInternalDBWithTableSchema } = require("./utils.js");
+
+
+require("./helpers.js")
+  .readDatabase()
+  .then((data) => {
+    populateInternalDBWithTableSchema(data);
+  });
+
+const app = express();
+
 const PORT = process.env.PORT || 3000;
+
 
 app.use(express.static("dashboard-ui"));
 app.use(express.json());
@@ -29,14 +39,13 @@ app.get("/", async (req, res) => {
   res.sendFile("index.html");
 });
 
-require("./helpers.js")
-  .readDatabase()
-  .then((data) => {
-    populateInternalDBWithTableSchema(data);
-  });
-
 app.use("/api", require("./routes"));
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+exports.startApp = () => {
+
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+  
+}
+ 

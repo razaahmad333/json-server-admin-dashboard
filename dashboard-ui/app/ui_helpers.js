@@ -1,11 +1,7 @@
 import * as UTILS from "./utils.js";
-import * as Helpers from "./helpers.js"
 import * as UI_TEMPLATES from "./templates.js";
-import { DATABASE_NAME } from "./config.js";
 import * as Services from "./services.js";
 import * as EventListeners from "./eventListeners.js";
-
-let selectedTable = "";
 
 export function fetchNdisplayTableNames() {
   Services.getListOfTables().then((tables) => {
@@ -17,8 +13,7 @@ export function fetchNdisplayTableNames() {
     EventListeners.handleTableDeleteButton();
 
     if (tables.length > 0) {
-      selectedTable = tables[0].tableName;
-      fetchNdisplayTableData(selectedTable);
+      fetchNdisplayTableData(tables[0].tableName);
     }
   });
 }
@@ -57,9 +52,3 @@ export function fetchNdisplayTableData(tableName) {
     $("#table-data").html(table);
   });
 }
-
-export function displayDatabaseName() {
-  $("#database-name").text(DATABASE_NAME || "Database");
-}
-
-function handleNewRowAddition() {}

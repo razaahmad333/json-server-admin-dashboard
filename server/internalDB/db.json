@@ -1,6 +1,8 @@
 {
-  "posts": [
-    "id",
-    "title"
-  ]
+  "users": [
+    "name",
+    "age"
+  ],
+  "books": [],
+  "rooms": []
 }

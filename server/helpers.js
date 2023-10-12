@@ -1,13 +1,19 @@
 const InternalDB = require("./internalDB/helpers.js");
 
-exports.readDatabase = async () => {
+exports.getDB = async () => {
   const { db } = await import("./db.mjs");
+  return db;
+};
+
+exports.readDatabase = async () => {
+  const db = await this.getDB();
   await db.read();
   return db.data;
 };
 
 exports.getDatabaseSummary = async () => {
   const data = await this.readDatabase();
+  console.log(data);
   const allTableSummary = Object.keys(data).reduce((acc, tableName) => {
     acc.push({ tableName: tableName, entries: data[tableName].length });
     return acc;
