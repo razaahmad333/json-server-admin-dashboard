@@ -1,0 +1,40 @@
+{
+  "name": "json-server-admin-dashboard",
+  "version": "1.0.0",
+  "description": "Simple admin dashboard for json-server and lowdb",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server dashboard-ui",
+    "dev": "nodemon server/server.js"
+  },  
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/razaahmad333/json-server-admin-dashboard.git"
+  },
+  "keywords": [
+    "admin-dashboard",
+    "json-server",
+    "lowdb"
+  ],
+  "author": "Ahmad Raza",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/razaahmad333/json-server-admin-dashboard/issues"
+  },
+  "homepage": "https://github.com/razaahmad333/json-server-admin-dashboard#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "live-server": "^1.2.2",
+    "lowdb": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "dashboard-ui/*",
+      "server/internalDB/db.json"
+    ]
+  }
+}
