@@ -22,4 +22,15 @@ const adapter = new JSONFile(file)
 
 const __db = new Low(adapter, {})
 
-export { __db };
+export async function __readDatabase(){
+    await __db.read()
+    return __db.data
+}
+
+export async function __writeDatabase(data){
+    await __readDatabase()
+    __db.data = data
+    await __db.write()
+}
+
+export default __db;

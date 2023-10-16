@@ -1,19 +1,19 @@
-const helpers = require("../helpers");
+import * as DatabaseUtils from "../databaseUtils/index.js";
 
-exports.databaseSummary = async (req, res) => {
+export async function databaseSummary(req, res) {
   try {
-    const summary = await helpers.getDatabaseSummary();
+    const summary = await DatabaseUtils.getDatabaseSummary();
     res.json(summary);
   } catch (err) {
     console.log(err);
     res.status(500).send("Internal Server Error");
   }
-};
+}
 
-exports.getTableSchema = async (req, res) => {
+export async function getTableSchema(req, res) {
   try {
     const tableName = req.params.tableName;
-    const tableSchema = await helpers.getTableSchema(tableName);
+    const tableSchema = await DatabaseUtils.getTableSchema(tableName);
     res.json(tableSchema);
   } catch (err) {
     console.log(err);
@@ -21,11 +21,11 @@ exports.getTableSchema = async (req, res) => {
   }
 }
 
-exports.getTable = async (req, res) => {
+export async function getTable(req, res) {
 
   try {
     const tableName = req.params.tableName;
-    const tableData = await helpers.getTableData(tableName);
+    const tableData = await DatabaseUtils.getTableData(tableName);
     res.json(tableData);
   } catch (err) {
     console.log(err);
@@ -34,10 +34,10 @@ exports.getTable = async (req, res) => {
 
 }
 
-exports.createTable = async (req, res) => { 
+export async function createTable(req, res) { 
   try {
     const tableName = req.params.tableName;
-    await helpers.createTable(tableName);
+    await DatabaseUtils.createTable(tableName);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);
@@ -45,10 +45,10 @@ exports.createTable = async (req, res) => {
   }
 }
 
-exports.deleteTable = async (req, res) => {
+export async function deleteTable(req, res) {
   try {
     const tableName = req.params.tableName;
-    await helpers.deleteTable(tableName);
+    await deleteTable(tableName);
     res.sendStatus(200);
   } catch (err) {
     console.log(err);

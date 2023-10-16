@@ -1,22 +1,9 @@
-const fs = require('fs');
-const InternalDB = require("./internalDB/helpers.js");
-const chalk = require("chalk");
+import { readFileSync } from 'fs';
+import chalk from "chalk";
 
-exports.populateInternalDBWithTableSchema = async (jsonFileData) => {
-  const tableNames = Object.keys(jsonFileData);
-  const schemas = tableNames.map((tableName) => {
-    const table = jsonFileData[tableName];
-    const tableSchema = table.length > 0 ? Object.keys(jsonFileData[tableName][0]) : [];
-    return { tableName, schema: tableSchema };
-  });
-  await InternalDB.saveSchemaInBulk(schemas, true);
-};
-
-
-
-exports.isJSONFile = (filePath) =>{
+export function isJSONFile(filePath){
     try {
-        const fileContent = fs.readFileSync(filePath);
+        const fileContent = readFileSync(filePath);
         JSON.parse(fileContent);
         return true;
     } catch (error) {
@@ -24,7 +11,7 @@ exports.isJSONFile = (filePath) =>{
     }
 }
 
-exports.suggestionsForValidJSONFile = (dbFile) => {
+export function suggestionsForValidJSONFile(dbFile) {
   console.log(chalk.red(`Error: The database file ${dbFile} is not a valid JSON file.`));
   console.log();
   console.log(chalk.yellow(`Possible issues to check:`));

@@ -1,27 +1,33 @@
-const fs = require("fs");
-const chalk = require("chalk");
+import { existsSync } from "fs";
+import chalk from "chalk";
+import dotenv from "dotenv";
+import { isJSONFile, suggestionsForValidJSONFile } from "./server/utils.js";
+import { populateInternalDBWithTableSchema } from "./server/internalDB/helpers.js";
+import { startApp } from "./server/server.js";
 
-const {
-  isJSONFile,
-  suggestionsForValidJSONFile,
-} = require("./server/utils.js");
+dotenv.config();
 
-require("dotenv").config();
 const dbFile = process.env.DB_FILE_ABS_PATH;
 
-if (!fs.existsSync(dbFile)) {
-  console.log(
-    chalk.red(`Database file ${dbFile} does not exist. Please create it.`)
-  );
+if (!existsSync(dbFile)) {
+  console.log(chalk.red(`Database file ${dbFile} does not exist. Please create it.`));
   console.log();
   process.exit();
 }
 
 if (!isJSONFile(dbFile)) {
   suggestionsForValidJSONFile(dbFile);
-  process.exit(1); // Use a non-zero exit code to indicate an error
+  process.exit(1);
 }
 
-const { startApp } = require("./server/server.js");
+console.log();
+console.log(chalk.bgBlue.white.bold(' Welcome to json-server admin dashboard! '));
+console.log();
+console.log(chalk.magenta("Database file: " + dbFile + " 📁"));
 
-startApp();
+populateInternalDBWithTableSchema().then(() => {
+  console.log();
+  console.log(chalk.blueBright("Internal DB populated with table schema" + " 🗄️"));
+  console.log();
+  startApp();
+});

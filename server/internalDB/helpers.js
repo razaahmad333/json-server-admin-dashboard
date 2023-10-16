@@ -1,42 +1,43 @@
-exports.getDB = async () => {
-  const { __db } = await import("./index.mjs");
-  return __db;
-};
+import { readDatabase as readExternalDatabase } from "../db.js";
+import { __writeDatabase, __readDatabase } from "./index.js";
 
-exports.readDatabase = async () => {
-  const __db = await this.getDB();
-  await __db.read();
-  return __db.data;
-};
-
-exports.getSchema = async (tableName) => {
-  const data = await this.readDatabase();
+export async function getSchema(tableName) {
+  const data = await __readDatabase();
   return data[tableName];
-};
+}
 
-exports.saveSchema = async (tableName, schema) => {
-  const __db = await this.getDB();
-  await __db.read();
-  __db.data[tableName] = schema;
-  await __db.write();
-};
+export async function saveSchema(tableName, schema) {
+  const data = await __readDatabase();
+  data[tableName] = schema;
+  await __writeDatabase(data);
+}
 
-exports.saveSchemaInBulk = async (schemas, initial = false) => {
-  const __db = await this.getDB();
-  await __db.read();
+export async function saveSchemaInBulk(schemas, initial = false) {
+  let data = await __readDatabase();
 
-  if (!__db.data) {
-    __db.data = {};
+  if (!data) {
+    data = {};
   }
   schemas.forEach(({ tableName, schema }) => {
-    if (initial && __db.data[tableName]) {
+    if (initial && data[tableName]) {
       return;
     }
-    if (!initial && __db.data[tableName]) {
-      schema = [...new Set([...__db.data[tableName], ...schema])];
+    if (!initial && data[tableName]) {
+      schema = [...new Set([...data[tableName], ...schema])];
       return;
     }
-    __db.data[tableName] = schema;
+    data[tableName] = schema;
   });
-  await __db.write();
-};
+  await __writeDatabase(data);
+}
+
+export async function populateInternalDBWithTableSchema() {
+  const jsonFileData = await readExternalDatabase();
+  const tableNames = Object.keys(jsonFileData);
+  const schemas = tableNames.map((tableName) => {
+    const table = jsonFileData[tableName];
+    const tableSchema = table.length > 0 ? Object.keys(jsonFileData[tableName][0]) : [];
+    return { tableName, schema: tableSchema };
+  });
+  await saveSchemaInBulk(schemas, true);
+}

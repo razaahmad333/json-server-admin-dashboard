@@ -1,13 +1,13 @@
-const express = require("express");
+import { Router } from "express";
 
-const controllers = require("../controllers");
+import { databaseSummary, getTable, getTableSchema, createTable, deleteTable } from "../controllers/index.js";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/databaseSummary", controllers.databaseSummary);
-router.get("/getTable/:tableName", controllers.getTable);
-router.get("/getTableSchema/:tableName", controllers.getTableSchema);
-router.post("/createTable/:tableName", controllers.createTable);
-router.delete("/deleteTable/:tableName", controllers.deleteTable);
+router.get("/databaseSummary", databaseSummary);
+router.get("/getTable/:tableName", getTable);
+router.get("/getTableSchema/:tableName", getTableSchema);
+router.post("/createTable/:tableName", createTable);
+router.delete("/deleteTable/:tableName", deleteTable);
 
-module.exports = router;
+export default router;
