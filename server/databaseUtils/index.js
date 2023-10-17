@@ -1,4 +1,4 @@
-import { getSchema } from "../internalDB/helpers.js";
+import * as InternalDBUtils from "../internalDB/helpers.js";
 import  { readDatabase, writeDatabase } from "../db.js";
 
 export async function getDatabaseSummary() {
@@ -11,7 +11,7 @@ export async function getDatabaseSummary() {
 }
 
 export async function getTableSchema(tableName) {
-  const schema = await getSchema(tableName);
+  const schema = await InternalDBUtils.getSchema(tableName);
   return schema;
 }
 
@@ -30,4 +30,12 @@ export async function deleteTable(tableName) {
     const data = await readDatabase();
     delete data[tableName];
     await writeDatabase(data);
+    await InternalDBUtils.deleteSchema(tableName);
+}
+
+export async function addRow(tableName, row) {
+  const data = await readDatabase();
+  data[tableName].push(row);
+  await writeDatabase(data);
+  await InternalDBUtils.updateSchema(tableName, Object.keys(row));
 }

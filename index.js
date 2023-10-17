@@ -26,8 +26,14 @@ console.log();
 console.log(chalk.magenta("Database file: " + dbFile + " 📁"));
 
 populateInternalDBWithTableSchema().then(() => {
-  console.log();
+  console.log();  
   console.log(chalk.blueBright("Internal DB populated with table schema" + " 🗄️"));
   console.log();
   startApp();
+}).catch((error) => {
+  console.log();
+  console.log(chalk.red("Error populating internal DB with table schema" + " 🗄️"));
+  console.log(error);
+  console.log();
+  process.exit(1);
 });

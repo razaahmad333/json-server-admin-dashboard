@@ -6,19 +6,30 @@ export const tableNameListTemplate = ({ tableName, entries }) => `
         <div>
           <span class="badge bg-primary rounded-pill">${entries}</span>
           <button class="btn btn-sm text-danger delete-table-button" data-id="${tableName}">
-            ${ICONS.trashIcon}  
+            ${ICONS.trash}  
           </button>
         </div>
     </div>
     `;
 
-export const tableHeaderTemplate = (tableHeader) =>
-  ` <th scope="col">${tableHeader}</th> `;
+export const tableHeaderTemplate = (tableHeader) => ` <th scope="col">${tableHeader}</th> `;
 
-export const tableRowTemplate = (tableRow) =>
-  ` <tr> ${tableRow
-    .map((row, i) => `<td ${i == 0 ? "scope='row'" : ""}  >${row}</td>`)
-    .join("")} </tr> `;
+export const tableRowTemplate = (rowdata, headers, idx) => `
+    <tr> 
+        <td class="d-flex  align-items-center ">
+            <input type="checkbox">
+            <button type="button" class="btn hover-danger btn-sm">${ICONS.trash}</button>
+            <button type="button" class="btn hover-warning btn-sm">${ICONS.edit}</button>
+        </td>
+        ${headers
+          .map(
+            (field, i) =>
+              `<td ${i == 0 ? "scope='row'" : ""}  >
+                ${rowdata[field] || (i === 0 ? idx + 1 : "-")}
+            </td>`
+          )
+          .join("")} 
+    </tr> `;
 
 export const tableTemplate = ({ tableHeader, tableRows }) => `
     <thead>
@@ -30,3 +41,27 @@ export const tableTemplate = ({ tableHeader, tableRows }) => `
         ${tableRows}
     </tbody>
     `;
+
+export const toastTemplate = (message, bg = "primary") => `
+    <div class="toast toast_custom_style" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <div class="bg-${bg} toast_square"></div>
+          <strong class="me-auto">json-server admin dashboard</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${message}
+        </div>
+    </div>
+`;
+
+export const formElementTemplate = ({ label, id, type = "text", placeholder, value = "" }) => `
+    <div class=" mb-3">
+        <label for="${id}" class="form-label">${label}</label>
+        <div class="input-group">
+            <input type="${type}" class="form-control" id="${id}" name="${id}" aria-describedby="table-name-help" placeholder="${placeholder}" value="${value}">
+            <button type="button" class="btn btn-outline-secondary pb-2">${ICONS.trash}</button>
+        </div>
+    </div>
+`;
+// <div id="table-name-help" class="form-text">Enter the table name to add a row.</div>

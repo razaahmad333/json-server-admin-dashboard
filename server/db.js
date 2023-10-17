@@ -12,7 +12,7 @@ const db = new Low(adapter, {});
 
 export async function readDatabase() {
   await db.read();
-  return db.data;
+  return typeof db.data === "object" ? db.data : {};
 }
 
 export async function writeDatabase(data) {

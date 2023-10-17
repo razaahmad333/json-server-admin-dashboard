@@ -9,14 +9,13 @@
       rel="stylesheet"
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous" />
-
+    <link rel="stylesheet" href="./assets/styles.css">
+    
   </head>
   <body>
     <nav class="navbar bg-body-tertiary">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1" id="database-name"
-          >Admin Dashboard for <i>json-server & lowdb </i>
-        </span>
+        <span class="navbar-brand mb-0 h1" id="database-name">Admin Dashboard for <i>json-server & lowdb </i> </span>
       </div>
     </nav>
 
@@ -26,65 +25,65 @@
           <h5>Tables</h5>
 
           <div class="input-group mb-2" id="new-table-create-block">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="create a new table..." />
+            <input type="text" class="form-control" placeholder="create a new table..." />
             <button type="button" class="btn btn-secondary">Create</button>
           </div>
 
-          <ul class="list-group list-group" id="table-names">
-           
-          </ul>
+          <ul class="list-group list-group" id="table-names"></ul>
         </div>
         <div class="col-md-9">
           <div id="mainbar">
             <div class="d-flex justify-content-between align-items-center">
-            <div class="input-group mb-2 w-50" id="search-in-table-block">
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="search in table..." />
+
+              <h6 id="table-name">No table selected</h6>
+
+              <div class="input-group mb-2 w-50" id="search-in-table-block">
+                <input type="text" class="form-control" placeholder="search in table..." />
                 <button type="button" class="btn btn-secondary">Search</button>
               </div>
 
-              <button type="button" data-bs-toggle="modal" data-bs-target="#add-row-modal" class="btn btn-secondary">+ Add Row</button>
-
+              <button type="button" data-bs-toggle="modal" data-bs-target="#add-row-modal" id="open-add-row-modal-button" class="btn btn-secondary">
+                + Add Row
+              </button>
             </div>
 
-            
-
             <table class="table" id="table-data">
-              <thead></thead>
-              <tbody></tbody>
+              
             </table>
           </div>
         </div>
       </div>
     </div>
 
-
-      <div class="modal fade" id="add-row-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+    <div class="modal fade" id="add-row-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <form id="add-row-form">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="exampleModalLabel">Add Row</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-            <div class="input-group mb-2" id="add-field-block">
-                <input type="text" class="form-control" placeholder="add field..." />
-                <input type="text" class="form-control" placeholder="add value..." />
+              <div id="add-row-form-body"></div>
+
+              <div class="input-group mb-2" id="add-field-block">
+                <input type="text" class="form-control" placeholder="add new field..." />
                 <button type="button" class="btn btn-secondary">Add</button>
+              </div>              
             </div>
-            </div>
+
+
             <div class="modal-footer">
-              <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-secondary">Save</button>
+              <button type="button" class="btn" id="close-add-row-modal-button" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-secondary">Save</button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 p-3"></div>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

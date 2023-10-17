@@ -24,7 +24,7 @@ const __db = new Low(adapter, {})
 
 export async function __readDatabase(){
     await __db.read()
-    return __db.data
+    return typeof __db.data === "object" ? __db.data : {}
 }
 
 export async function __writeDatabase(data){

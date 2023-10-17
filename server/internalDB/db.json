@@ -1,8 +1,13 @@
 {
   "users": [
+    "id",
     "name",
-    "age"
+    "email",
+    "mobile"
   ],
-  "books": [],
-  "rooms": []
+  "books": [
+    "name",
+    "isbn",
+    "author"
+  ]
 }

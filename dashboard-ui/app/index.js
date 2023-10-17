@@ -5,6 +5,7 @@ function init() {
   UI_Helpers.fetchNdisplayTableNames();
   EventListeners.trackTableSelectionInSidebar();
   EventListeners.handleNewTableCreateButton();
+  EventListeners.handleAddNewRowButton();
 }
 
 init();

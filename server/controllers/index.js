@@ -17,41 +17,53 @@ export async function getTableSchema(req, res) {
     res.json(tableSchema);
   } catch (err) {
     console.log(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 }
 
 export async function getTable(req, res) {
-
   try {
     const tableName = req.params.tableName;
     const tableData = await DatabaseUtils.getTableData(tableName);
-    res.json(tableData);
+    const tableSchema = await DatabaseUtils.getTableSchema(tableName);
+    res.json({ tableData, tableSchema });
   } catch (err) {
     console.log(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ msg: "Internal Server Error" });
   }
-
 }
 
-export async function createTable(req, res) { 
+export async function createTable(req, res) {
   try {
+    // sleep for 5 seconds
     const tableName = req.params.tableName;
     await DatabaseUtils.createTable(tableName);
-    res.sendStatus(200);
+    res.status(200).json({ msg: "Table created successfully!" });
   } catch (err) {
     console.log(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 }
 
 export async function deleteTable(req, res) {
   try {
     const tableName = req.params.tableName;
-    await deleteTable(tableName);
-    res.sendStatus(200);
+    await DatabaseUtils.deleteTable(tableName);
+    res.status(200).json({ msg: "Table deleted successfully!" });
   } catch (err) {
     console.log(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+}
+
+export async function addRow(req, res) {
+  try {
+    const tableName = req.params.tableName;
+    const values = req.body;
+    await DatabaseUtils.addRow(tableName, values);
+    res.status(200).json({ msg: "Row added successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Internal Server Error" });
   }
 }
