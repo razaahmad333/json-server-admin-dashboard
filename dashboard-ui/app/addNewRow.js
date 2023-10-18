@@ -4,6 +4,8 @@ export function createAddRowHandler(formSelector) {
   let schema = [];
   let currentTable = null;
 
+  $(formSelector).find("[type='submit']").text("Save").attr("data-id", "save");
+
 
   const extendSchema = (newField) => {
     schema = [...schema, newField];

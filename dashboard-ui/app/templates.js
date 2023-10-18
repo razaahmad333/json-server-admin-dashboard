@@ -1,4 +1,5 @@
 import * as ICONS from "./icons.js";
+import * as Helpers from "./helpers.js";
 
 export const tableNameListTemplate = ({ tableName, entries }) => `
     <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -18,13 +19,17 @@ export const tableRowTemplate = (rowdata, headers, idx) => `
     <tr> 
         <td class="d-flex  align-items-center ">
             <input type="checkbox">
-            <button type="button" class="btn hover-danger btn-sm">${ICONS.trash}</button>
-            <button type="button" class="btn hover-warning btn-sm">${ICONS.edit}</button>
+            <button type="button" class="btn hover-danger btn-sm delete-row-button " data-id=${Helpers.getCompositeKey(rowdata, idx)}>
+                ${ICONS.trash}
+            </button>
+            <button type="button" class="btn hover-warning btn-sm edit-row-button" data-id=${Helpers.getCompositeKey(rowdata, idx)} >
+                ${ICONS.edit}
+            </button>
         </td>
         ${headers
           .map(
             (field, i) =>
-              `<td ${i == 0 ? "scope='row'" : ""}  >
+              `<td ${i == 0 ? "scope='row'" : ""} data-id='${field}'>
                 ${rowdata[field] || (i === 0 ? idx + 1 : "-")}
             </td>`
           )
@@ -55,12 +60,12 @@ export const toastTemplate = (message, bg = "primary") => `
     </div>
 `;
 
-export const formElementTemplate = ({ label, id, type = "text", placeholder, value = "" }) => `
+export const formElementTemplate = ({ label, id, type = "text", placeholder, value = "", deleteFieldOption = true }) => `
     <div class=" mb-3">
         <label for="${id}" class="form-label">${label}</label>
         <div class="input-group">
             <input type="${type}" class="form-control" id="${id}" name="${id}" aria-describedby="table-name-help" placeholder="${placeholder}" value="${value}">
-            <button type="button" class="btn btn-outline-secondary pb-2">${ICONS.trash}</button>
+           ${deleteFieldOption ? ` <button type="button" class="btn btn-outline-secondary pb-2">${ICONS.trash}</button>` : ""}
         </div>
     </div>
 `;

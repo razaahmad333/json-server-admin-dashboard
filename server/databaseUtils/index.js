@@ -1,5 +1,6 @@
 import * as InternalDBUtils from "../internalDB/helpers.js";
-import  { readDatabase, writeDatabase } from "../db.js";
+import { readDatabase, writeDatabase } from "../db.js";
+import * as Utils from "../utils.js";
 
 export async function getDatabaseSummary() {
   const data = await readDatabase();
@@ -27,10 +28,10 @@ export async function createTable(tableName) {
 }
 
 export async function deleteTable(tableName) {
-    const data = await readDatabase();
-    delete data[tableName];
-    await writeDatabase(data);
-    await InternalDBUtils.deleteSchema(tableName);
+  const data = await readDatabase();
+  delete data[tableName];
+  await writeDatabase(data);
+  await InternalDBUtils.deleteSchema(tableName);
 }
 
 export async function addRow(tableName, row) {
@@ -38,4 +39,17 @@ export async function addRow(tableName, row) {
   data[tableName].push(row);
   await writeDatabase(data);
   await InternalDBUtils.updateSchema(tableName, Object.keys(row));
+}
+
+export async function deleteRow(tableName, compositeKey) {
+  const data = await readDatabase();
+  let schema = await InternalDBUtils.getSchema(tableName);
+  data[tableName] = Utils.filterWithCompositeKey(data[tableName], compositeKey, schema, true);
+  await writeDatabase(data);
+}
+
+export async function editRow(tableName, idx, updatedRow) {
+  const data = await readDatabase();
+  data[tableName][idx] = updatedRow;  
+  await writeDatabase(data);
 }

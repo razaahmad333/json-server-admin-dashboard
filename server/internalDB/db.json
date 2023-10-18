@@ -3,11 +3,12 @@
     "id",
     "name",
     "email",
-    "mobile"
+    "mobile",
+    "salary",
+    "gender",
+    "bloodtype"
   ],
-  "books": [
-    "name",
-    "isbn",
-    "author"
+  "fruits": [
+    "name"
   ]
 }

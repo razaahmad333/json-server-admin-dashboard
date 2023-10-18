@@ -1,4 +1,3 @@
-
 export const getTableNameFromUrl = () => window.location.hash.substring(1);
 
 export const generateId = (schemaItem) => schemaItem.split(" ").join("-").toLowerCase();
@@ -10,11 +9,18 @@ export function capitalizeFirstLetter(str) {
 }
 
 export function isValid(values) {
-    
-    for (let key in values) {
-        if (values[key]) {
-        return true;
-        }
+  for (let key in values) {
+    if (values[key]) {
+      return true;
     }
-    return false;
+  }
+  return false;
+}
+
+export function getCompositeKey(rowData, index) {
+  const idField = Object.keys(rowData).find(key => ['id', '_id'].includes(key.toLowerCase())) || 'index';
+  const keys = Object.keys(rowData).filter(key => key !== idField);
+  const nextFieldData = keys.length > 0 ? rowData[keys[0]] : "";
+  const idFieldData = idField==='index'?index:rowData[idField];
+  return idFieldData + "-" + nextFieldData;
 }

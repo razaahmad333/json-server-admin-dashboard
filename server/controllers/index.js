@@ -67,3 +67,29 @@ export async function addRow(req, res) {
     res.status(500).json({ msg: "Internal Server Error" });
   }
 }
+
+export async function deleteRow(req, res) {
+  try {
+    const tableName = req.params.tableName;
+    const id = req.params.id;
+    await DatabaseUtils.deleteRow(tableName, id);
+    res.status(200).json({ msg: "Row deleted successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+}
+
+export async function editRow(req, res) {
+  try {
+    const tableName = req.params.tableName;
+    const id = req.params.id;
+    const values = req.body;
+
+    await DatabaseUtils.editRow(tableName, id, values);
+    res.status(200).json({ msg: "Row edited successfully!" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+}

@@ -14,9 +14,14 @@ export function fetchNdisplayTableNames() {
   });
 }
 
+export function insertTableNameInSidebar(tableName) {
+  $("#table-names").append(UI_TEMPLATES.tableNameListTemplate({ tableName, entries: 0 }));
+  EventListeners.handleTableDeleteButton();
+
+}
+
 export function fetchNdisplayTableData(tableName) {
   Services.getTableData(tableName).then(({ tableData, tableSchema }) => {
-
     $("#table-data").empty();
 
     if (tableData.length == 0) {
@@ -30,23 +35,28 @@ export function fetchNdisplayTableData(tableName) {
       headers.unshift("#");
     }
 
-    let tableHeader = "<th style='width: 150px'></th>";
-    tableHeader+= headers.map((header) => UI_TEMPLATES.tableHeaderTemplate(UTILS.capitalizeFirstLetter(header))).join("");
+    let tableHeader = "<th style='width: 100px'></th>";
+    tableHeader += headers.map((header) => UI_TEMPLATES.tableHeaderTemplate(UTILS.capitalizeFirstLetter(header))).join("");
     const tableRows = tableData.map((rowdata, idx) => UI_TEMPLATES.tableRowTemplate(rowdata, headers, idx)).join("");
     const table = UI_TEMPLATES.tableTemplate({ tableHeader, tableRows });
     $("#table-data").html(table);
+
+    EventListeners.handleDeleteRowButton();
+    EventListeners.handleEditRowButton();
   });
 }
 
-export function populateSchemaInModal(schema, initial = false) {
+export function populateSchemaInModal(schema, initial = false, values = null, deleteFieldOption=true) {
   if (initial) {
     $("#add-row-form-body").empty();
   }
-  const formElements = schema.map((schemaItem) => {
+  const formElements = schema.map((key) => {
     return UI_TEMPLATES.formElementTemplate({
-      label: Helpers.capitalizeFirstLetter(schemaItem),
-      id: Helpers.generateId(schemaItem),
-      placeholder: Helpers.generatePlaceholder(schemaItem),
+      label: Helpers.capitalizeFirstLetter(key),
+      id: Helpers.generateId(key),
+      placeholder: Helpers.generatePlaceholder(key),
+      value: values ? values[key] : "",
+      deleteFieldOption,
     });
   });
 

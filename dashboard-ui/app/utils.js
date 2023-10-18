@@ -50,22 +50,18 @@ export function createActionMilestoneMethods($button) {
   };
 }
 
-  export function createActionForButton(selector, action) {
+export function createActionForButton(selector, action) {
+  $(selector).on("click", (event) => {
+    const $button = $(event.target).is("button") ? $(event.target) : $(event.target).closest("button");
 
-    $(selector).on("click", (event) => {
-      const $button = $(event.target).is("button") ? $(event.target) : $(event.target).closest("button");
+    if ($button.prop("disabled")) {
+      return;
+    }
 
-      if ($button.prop("disabled")) {
-        return;
-      }
+    $button.prop("disabled", true);
+    $button.css("cursor", "not-allowed");
 
-      $button.prop("disabled", true);
-      $button.css("cursor", "not-allowed");
-
-      $button.animate({ opacity: 0.5 }, 100, () => {
-        const { onStart, onSuccess, onError } = createActionMilestoneMethods($button);
-        action(onStart, onSuccess, onError, $button);
-        $button.animate({ opacity: 1 }, 100);
-      });
-    });
-  }
+    const { onStart, onSuccess, onError } = createActionMilestoneMethods($button);
+    action(onStart, onSuccess, onError, $button);
+  });
+}
