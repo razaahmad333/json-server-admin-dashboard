@@ -3,7 +3,7 @@ import { __writeDatabase, __readDatabase } from "./index.js";
 
 export async function getSchema(tableName) {
   const data = await __readDatabase();
-  return data[tableName];
+  return data[tableName] || [];
 }
 
 export async function saveSchema(tableName, schema) {

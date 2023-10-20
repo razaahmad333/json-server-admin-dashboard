@@ -1,5 +1,4 @@
 import * as ICONS from "./icons.js";
-import * as Helpers from "./helpers.js";
 
 export const tableNameListTemplate = ({ tableName, entries }) => `
     <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -19,10 +18,10 @@ export const tableRowTemplate = (rowdata, headers, idx) => `
     <tr> 
         <td class="d-flex  align-items-center ">
             <input type="checkbox">
-            <button type="button" class="btn hover-danger btn-sm delete-row-button " data-id=${Helpers.getCompositeKey(rowdata, idx)}>
+            <button type="button" class="btn hover-danger btn-sm delete-row-button " data-id=${ idx}>
                 ${ICONS.trash}
             </button>
-            <button type="button" class="btn hover-warning btn-sm edit-row-button" data-id=${Helpers.getCompositeKey(rowdata, idx)} >
+            <button type="button" class="btn hover-warning btn-sm edit-row-button" data-id=${ idx} >
                 ${ICONS.edit}
             </button>
         </td>
@@ -65,8 +64,8 @@ export const formElementTemplate = ({ label, id, type = "text", placeholder, val
         <label for="${id}" class="form-label">${label}</label>
         <div class="input-group">
             <input type="${type}" class="form-control" id="${id}" name="${id}" aria-describedby="table-name-help" placeholder="${placeholder}" value="${value}">
-           ${deleteFieldOption ? ` <button type="button" class="btn btn-outline-secondary pb-2">${ICONS.trash}</button>` : ""}
         </div>
     </div>
 `;
 // <div id="table-name-help" class="form-text">Enter the table name to add a row.</div>
+// ${deleteFieldOption ? ` <button type="button" class="btn btn-outline-secondary pb-2">${ICONS.trash}</button>` : ""}

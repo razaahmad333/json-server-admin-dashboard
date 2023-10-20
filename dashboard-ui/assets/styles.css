@@ -7,8 +7,8 @@
   }
 
   .toast_custom_style {
-    animation: toast-to-left-swiping 0.5s ease-in-out;
-    animation-delay: 0.5s;
+    animation: toast-to-left-swiping 1s ease-in-out;
+    animation-delay: 1s;
     animation-fill-mode: forwards;
   }
 

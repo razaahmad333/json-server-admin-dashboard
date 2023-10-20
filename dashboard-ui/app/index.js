@@ -6,6 +6,7 @@ function init() {
   EventListeners.trackTableSelectionInSidebar();
   EventListeners.handleNewTableCreateButton();
   EventListeners.handleAddNewRowButton();
+  EventListeners.handleAddNewColumnButton();
 }
 
 init();

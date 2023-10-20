@@ -1,14 +1,7 @@
 {
   "users": [
-    "id",
     "name",
-    "email",
-    "mobile",
-    "salary",
-    "gender",
-    "bloodtype"
-  ],
-  "fruits": [
-    "name"
+    "age",
+    "class"
   ]
 }

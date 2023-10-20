@@ -42,7 +42,7 @@ export function createActionMilestoneMethods($button) {
       Toast.success(msg || "Action completed successfully!");
     },
 
-    onError(error, msg) {
+    onError(msg) {
       $button.prop("disabled", false);
       $button.css("cursor", "pointer");
       Toast.danger(msg || `Action failed! ${error.message}`);

@@ -14,7 +14,7 @@ export async function getTableSchema(req, res) {
   try {
     const tableName = req.params.tableName;
     const tableSchema = await DatabaseUtils.getTableSchema(tableName);
-    res.json(tableSchema);
+    res.status(200).json(tableSchema);
   } catch (err) {
     console.log(err);
     res.status(500).json({ msg: "Internal Server Error" });
@@ -85,7 +85,6 @@ export async function editRow(req, res) {
     const tableName = req.params.tableName;
     const id = req.params.id;
     const values = req.body;
-
     await DatabaseUtils.editRow(tableName, id, values);
     res.status(200).json({ msg: "Row edited successfully!" });
   } catch (err) {

@@ -2,7 +2,6 @@ import * as Actions from "./actions.js";
 import * as UI_Helpers from "./ui_helpers.js";
 import * as Helpers from "./helpers.js";
 import * as Utils from "./utils.js";
-import { createAddRowHandler } from "./addNewRow.js";
 
 export function handleNewTableCreateButton() {
   Utils.createActionForButton("#new-table-create-block button", Actions.createTable);
@@ -11,8 +10,6 @@ export function handleNewTableCreateButton() {
 export function handleTableDeleteButton() {
   Utils.createActionForButton(".delete-table-button", Actions.deleteTable);
 }
-
-
 
 export function trackTableSelectionInSidebar() {
   const $tableNameElement = $("#table-name");
@@ -25,53 +22,37 @@ export function trackTableSelectionInSidebar() {
   $(window).on("hashchange", () => {
     const tableName = Helpers.getTableNameFromUrl();
     $tableNameElement.text(tableName || "No table selected");
+    if (!tableName) {
+      return;
+    }
     UI_Helpers.fetchNdisplayTableData(tableName);
   });
 }
 
 export function handleAddNewRowButton() {
-  const addRowHandler = createAddRowHandler("#add-row-form");
+  Utils.createActionForButton("#open-add-row-modal-button", Actions.populateSchema);
+  Utils.createActionForButton("#add-row-form [type='submit']", handleCreateEditRowAction);
+}
 
-  const action = (onStart, onSuccess, onError) => {
-    const tableName = Helpers.getTableNameFromUrl();
-    addRowHandler.setCurrentTable(tableName);
-    Actions.populateSchema(tableName, {
-      onStart,
-      onSuccess: (msg, schema) => {
-        onSuccess(msg);
-        addRowHandler.extendSchemaInBulk(schema);
-      },
-      onError,
-    });
-  };
+export function handleCreateEditRowAction(onStart, onSuccess, onError, $button) {
+  const action = $button.data("id");
+  console.log(action);
+  if (action === "edit") {
+    Actions.editRow(onStart, onSuccess, onError, $button);
+  } else {
+    Actions.addRow(onStart, onSuccess, onError, $button);
+  }
+}
 
-  Utils.createActionForButton("#open-add-row-modal-button", action);
-
-  const addRowAction = (onStart, onSuccess, onError) => {
-    const tableName = addRowHandler.currentTable;
-    const data = new FormData($("#add-row-form")[0]);
-    const values = Object.fromEntries(data.entries());
-
-    if (!Helpers.isValid(values)) {
-      onError(null, "Invalid data!");
-      return;
+export function handleAddNewColumnButton() {
+  const $addFieldBlock = $("#add-field-block");
+  $addFieldBlock.find("button").on("click", () => {
+    const $fieldName = $addFieldBlock.find("input").val();
+    if ($fieldName) {
+      UI_Helpers.populateSchemaInModal([$fieldName]);
+      $addFieldBlock.find("input").val("");
     }
-
-    Actions.addRow(
-      { tableName, values },
-      {
-        onStart,
-        onSuccess: (msg) => {
-          onSuccess(msg);
-          UI_Helpers.fetchNdisplayTableData(tableName);
-          addRowHandler.reset();
-        },
-        onError,
-      }
-    );
-  };
-
-  Utils.createActionForButton("#add-row-form [type='submit'] [data-id='save']", addRowAction);
+  }); 
 }
 
 export function handleDeleteRowButton() {
@@ -80,6 +61,4 @@ export function handleDeleteRowButton() {
 
 export function handleEditRowButton() {
   Utils.createActionForButton(".edit-row-button", Actions.populateEditRowModal);
-
-  Utils.createActionForButton("#add-row-form [type='submit'] [data-id='edit']", Actions.editRow);
 }

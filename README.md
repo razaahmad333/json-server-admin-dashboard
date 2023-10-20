@@ -68,7 +68,7 @@ Follow these steps to set up and start using the json-server Admin Dashboard:
 
 6. **Access the Admin Dashboard**:
 
-   Open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to access the JSON Server Admin Dashboard.
+   Open your web browser and navigate to [http://localhost:3214](http://localhost:3214) to access the JSON Server Admin Dashboard.
 
 7. **Enjoy!**
 
